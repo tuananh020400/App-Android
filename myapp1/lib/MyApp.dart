@@ -37,19 +37,28 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
     return MaterialApp(
         title: "This is a StatefulWidget",
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Transaction manager'),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: (){
-                  setState(() {
-                    _insertTransaction();
-                  });
-                },
-              )
-            ],
-          ),
+            appBar: AppBar(
+              title: const Text('Transaction manager'),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: (){
+                    setState(() {
+                      _insertTransaction();
+                    });
+                  },
+                )
+              ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              tooltip: 'Add Transaction',
+              child: Icon(Icons.add),
+              onPressed: (){
+                setState(() {
+                  this._insertTransaction();
+                });
+              },
+            ),
             key: _scaffoldKey,
             body: SafeArea(
               minimum: const EdgeInsets.only(left: 20, right: 20),
