@@ -23,11 +23,33 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   Transaction _transaction = Transaction(content: '', amount: 0.0);
   List<Transaction> _transactions = [];
 
+  void _insertTransaction(){
+    if(_transaction.content.isEmpty || _transaction.amount == 0.0 || _transaction.amount.isNaN){
+      return;
+    }
+    _transactions.add(_transaction);
+    _transaction = Transaction(content: '', amount: 0.0);
+    _contentController.text = '';
+    _amountController.text = '';
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: "This is a StatefulWidget",
         home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Transaction manager'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: (){
+                  setState(() {
+                    _insertTransaction();
+                  });
+                },
+              )
+            ],
+          ),
             key: _scaffoldKey,
             body: SafeArea(
               minimum: const EdgeInsets.only(left: 20, right: 20),
@@ -68,10 +90,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
                           //Display to UI ?
                           //Now it must add the "transaction object" to a list of transactions(state)
                           setState(() {
-                            _transactions.add(_transaction);
-                            _transaction = Transaction(content: '', amount: 0.0);
-                            _contentController.text = '';
-                            _amountController.text = '';
+                            _insertTransaction();
                           });
                           //Now I want to display the list below
                           _scaffoldKey.currentState!.showSnackBar(
