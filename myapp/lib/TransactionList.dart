@@ -13,21 +13,40 @@ class TransactionList extends StatelessWidget{
             ),
             color: (index - 1) % 2 == 0 ? Colors.green : Colors.teal,
             elevation: 10,
-            child: ListTile(
-              leading: const Icon(Icons.access_alarm),
-              title: Text(transactions[index].content,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.white
+            child: Row(
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(transactions[index].content,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.white
+                      ),),
+                    Text("Date ${transactions[index].createTime}",
+                      style: TextStyle(fontSize: 20, color: Colors.white),)
+                  ],
                 ),
-              ),
-              subtitle: Text('Price: ${transactions[index].amount}',
-                  style: TextStyle(fontSize: 18, color: Colors.white)),
-              onTap: () {
-                print('You clicked: ${transactions[index].content}');
-              },
-            ),
+                Text(data)
+              ],
+            )
+            // ListTile(
+            //   leading: const Icon(Icons.access_alarm),
+            //   title: Text(transactions[index].content,
+            //     style: TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 18,
+            //         color: Colors.white
+            //     ),
+            //   ),
+            //   subtitle: Text('Price: ${transactions[index].amount}',
+            //       style: TextStyle(fontSize: 18, color: Colors.white)),
+            //   onTap: () {
+            //     print('You clicked: ${transactions[index].content}');
+            //   },
+            // ),
           );
         });
   }

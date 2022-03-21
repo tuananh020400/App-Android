@@ -20,13 +20,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   final _amountController = TextEditingController();
 
   //define states
-  Transaction _transaction = Transaction(content: '', amount: 0.0);
+  Transaction _transaction = Transaction(content: '', amount: 0.0, );
   List<Transaction> _transactions = [];
 
   void _insertTransaction(){
     if(_transaction.content.isEmpty || _transaction.amount == 0.0 || _transaction.amount.isNaN){
       return;
     }
+    _transaction.createTime = DateTime.now();
     _transactions.add(_transaction);
     _transaction = Transaction(content: '', amount: 0.0);
     _contentController.text = '';
@@ -108,7 +109,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
                                 duration: Duration(seconds: 3),
                               )
                           );
-
                         },
                       ),
                     ),
