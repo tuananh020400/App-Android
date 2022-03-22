@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+//Hiện trạng thái connec
 class StatusBar extends StatelessWidget {
   String _statusMessage;
   StatusBar({required statusMessage}): _statusMessage = statusMessage;

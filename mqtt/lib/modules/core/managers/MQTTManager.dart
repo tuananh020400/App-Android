@@ -21,7 +21,7 @@ class MQTTManager extends ChangeNotifier {
     // TODO: If already connected throw error
     // TODO: Remove forced unwrap usage and assertion
     _identifier = identifier;
-    _host = host;
+    _host = "broker.emqx.io";
     _client = MqttServerClient(_host!, _identifier);
     _client!.port = 1883;
     _client!.keepAlivePeriod = 20;
