@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'mqtt/MQTTView.dart';
 import 'mqtt/MQTTAppState.dart';
 import 'package:provider/provider.dart';
+import 'gatepage.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,10 +18,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
+          brightness: Brightness.dark,
           primarySwatch: Colors.blue,
         ),
         home: ChangeNotifierProvider<MQTTAppState>(
-          create: (_) => MQTTAppState(),
+          create: (context) => MQTTAppState(),
           child: MQTTView(),
         ));
   }

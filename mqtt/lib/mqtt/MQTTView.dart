@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'MQTTAppState.dart';
 import 'MQTTManager.dart';
+import 'package:fluttermqttnew/gatepage.dart';
 
 class MQTTView extends StatefulWidget {
   @override
@@ -12,7 +13,6 @@ class MQTTView extends StatefulWidget {
   }
 }
 class _MQTTViewState extends State<MQTTView>{
-  final TextEditingController _messageTextController = TextEditingController();
   late MQTTAppState currentAppState;
   late MQTTManager manager;
 
@@ -23,8 +23,6 @@ class _MQTTViewState extends State<MQTTView>{
 
   @override
   void dispose() {
-    _messageTextController.dispose();
-    _configureAndConnect();
     super.dispose();
   }
 
@@ -35,7 +33,7 @@ class _MQTTViewState extends State<MQTTView>{
     final Scaffold scaffold = Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Hello Mai'),
+        title: Text(context.watch<MQTTAppState>().getNhietDo.toString()),
         actions: <Widget>[
           Icon(_iconMqttState(currentAppState.getAppConnectionState)),
           Padding(padding: EdgeInsets.all(6))],
@@ -60,76 +58,60 @@ class _MQTTViewState extends State<MQTTView>{
     return scaffold;
   }
 
-  Widget _buildAppBar(BuildContext context){
-    return AppBar(
-      title: Center(
-        child: Text('MQTT'),
-      ),
-        backgroundColor: Colors.blue,
-    );
-  }
-
   Widget _buildColumn(){
     return Container(
       padding: EdgeInsets.all(0.5),
       child: Column(
       children: <Widget>[
-        _buildEditableColumn(),
+        Padding(padding: const EdgeInsets.all(10)),
+        _buildConnectButtonFrom(currentAppState.getAppConnectionState),
+        _buildGate(),
+        //_buildNode(),
         _buildScrollableTextWith(currentAppState.getHistoryText)
       ],
     ),);
   }
+  Widget _buildGate(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Padding(padding: const EdgeInsets.all(5)),
+        InkWell(
+            onTap: (){
+              print('Alo');
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => GatePage(currentAppState: this.currentAppState,)));
+            },
+            child: Container(
+              padding: EdgeInsets.all(40),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(20)
+              ),
+              child: Text('Gate way', style: (TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),),
+            )
+        ),
+        InkWell(
+            onTap: (){
+              print('Alo');
+            },
+            child: Container(
+              child: Text('Gate'),
+            )
+        )
+      ],
+    );
+  }
+
 
   Widget _buildEditableColumn(){
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: <Widget>[
-          _buildPublishMessageRow(),
-          const SizedBox(height: 10),
           _buildConnectButtonFrom(currentAppState.getAppConnectionState),
         ],
-      ),
-    );
-  }
-
-  Widget _buildPublishMessageRow(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Expanded(
-            child: _buildTextFeildWith(_messageTextController,'Enter message',currentAppState.getAppConnectionState),
-        ),
-        _buildSendButtonFrom(currentAppState.getAppConnectionState),
-      ],
-    );
-  }
-
-  Widget _buildConnectionStateText(String status){
-    return Row(
-      children: <Widget>[
-        Expanded(
-            child: Container(
-              color: Colors.orangeAccent,
-              child: Text(status,textAlign: TextAlign.center,),
-            ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildTextFeildWith(TextEditingController controller,String hintText, MQTTAppConnectionState state){
-    bool shouldEnable = false;
-    if(controller == _messageTextController && state == MQTTAppConnectionState.connected){
-      shouldEnable = true;
-    }
-    return TextField(
-      enabled: shouldEnable,
-      controller: controller,
-      decoration: InputDecoration(
-        contentPadding:
-          const EdgeInsets.only(left: 0, bottom: 0, right: 0, top: 0),
-        labelText: hintText,
       ),
     );
   }
@@ -167,16 +149,6 @@ class _MQTTViewState extends State<MQTTView>{
     );
   }
 
-  Widget _buildSendButtonFrom(MQTTAppConnectionState state){
-    return RaisedButton(
-        color: Colors.green,
-        child: const Text('Send'),
-        onPressed: state == MQTTAppConnectionState.connected? (){
-          _publishMessage(_messageTextController.text);
-        } : null
-    );
-  }
-
   IconData _iconMqttState(MQTTAppConnectionState state){
     switch (state) {
       case MQTTAppConnectionState.connected:
@@ -208,6 +180,5 @@ class _MQTTViewState extends State<MQTTView>{
   void _publishMessage(String text)
   {
     manager.publish(text);
-    _messageTextController.clear();
   }
 }
