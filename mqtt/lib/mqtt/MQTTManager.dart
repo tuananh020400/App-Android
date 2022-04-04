@@ -1,7 +1,42 @@
 import 'package:mqtt_client/mqtt_client.dart';
 import 'MQTTAppState.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fluttermqttnew/mqtt/MQTTView.dart';
 
+enum MQTTAppConnectionState {connected, disconnected, connecting}
+
+class MQTTAppState with ChangeNotifier {
+  MQTTAppConnectionState _appConnectionState = MQTTAppConnectionState
+      .disconnected;
+  String _receivedText = '';
+  String _historyText = '';
+  int _nhietdo = 123;
+
+  void setReceivedText(String text) {
+    _receivedText = text;
+    _historyText = _historyText + '\n' + _receivedText;
+    _nhietdo = int.parse(_receivedText);
+    notifyListeners();
+    notifyListeners();
+  }
+
+  void setAppConnectionState(MQTTAppConnectionState state) {
+    _appConnectionState = state;
+    notifyListeners();
+    notifyListeners();
+  }
+
+  String get getReceivedText => _receivedText;
+
+  String get getHistoryText => _historyText;
+
+  int get getNhietDo => _nhietdo;
+
+  MQTTAppConnectionState get getAppConnectionState => _appConnectionState;
+
+}
 class MQTTManager {
   final MQTTAppState _currentState;
   MqttServerClient? _client;
@@ -31,8 +66,12 @@ class MQTTManager {
     _client!.onConnected = onConnected;
     _client!.onSubscribed = onSubscribed;
 
-    final MqttConnectMessage connMess = MqttConnectMessage().
-    withClientIdentifier(_identifier).withWillTopic('willTopic').withWillMessage('willMessage').startClean().withWillQos(MqttQos.atLeastOnce);
+    final MqttConnectMessage connMess = MqttConnectMessage()
+        .withClientIdentifier(_identifier)
+        .withWillTopic('willTopic')
+        .withWillMessage('willMessage')
+        .startClean()
+        .withWillQos(MqttQos.atLeastOnce);
     print('Connecting to emqx...');
     _client!.connectionMessage = connMess;
   }

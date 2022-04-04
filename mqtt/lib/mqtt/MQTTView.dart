@@ -65,13 +65,13 @@ class _MQTTViewState extends State<MQTTView>{
       children: <Widget>[
         Padding(padding: const EdgeInsets.all(10)),
         _buildConnectButtonFrom(currentAppState.getAppConnectionState),
-        _buildGate(),
+        buildGate(),
         //_buildNode(),
         _buildScrollableTextWith(currentAppState.getHistoryText)
       ],
     ),);
   }
-  Widget _buildGate(){
+  Widget buildGate(){
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -80,7 +80,7 @@ class _MQTTViewState extends State<MQTTView>{
             onTap: (){
               print('Alo');
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => GatePage(currentAppState: this.currentAppState,)));
+                  builder: (context) => GatePageState()));
             },
             child: Container(
               padding: EdgeInsets.all(40),
