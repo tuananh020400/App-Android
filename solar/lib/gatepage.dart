@@ -26,6 +26,7 @@ class _GatePageState extends State<GatePage>{
         children: <Widget>[
           Padding(padding: EdgeInsets.all(5)),
           _buildConnectButton(currentAppState.getAppConnectionState),
+          _buildJson(),
         ],
       ),
     );
@@ -47,6 +48,23 @@ class _GatePageState extends State<GatePage>{
               child: const Text('Disconnect'),
               onPressed: state == MQTTAppConnectionState.connected? _disconnect : null,
             ))
+      ],
+    );
+  }
+
+  Widget _buildJson(){
+    return Row(
+      children: [
+        Expanded(
+          child: Center(
+            child: Text(currentAppState.getUserName),
+          )),
+        Padding(padding: EdgeInsets.all(5)),
+        Expanded(
+          child: Center(
+              child: Text(currentAppState.getUserEmail),
+          ),
+    )
       ],
     );
   }
