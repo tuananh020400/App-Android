@@ -22,6 +22,11 @@ class _MQTTViewState extends State<MQTTView>{
   void initState() {
     super.initState();
   }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +94,7 @@ class _MQTTViewState extends State<MQTTView>{
             onTap: (){
               print('Alo');
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => GatePageState()));
+                  builder: (context) => GatePage()));
             },
             child: Container(
               padding: EdgeInsets.all(40),

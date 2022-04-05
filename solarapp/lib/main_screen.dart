@@ -1,8 +1,9 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:solarapp/mqtt_manager.dart';
-import 'package:solarapp/mqtt_app_state.dart';
+import 'package:solar/mqtt_manager.dart';
+import 'package:solar/mqtt_app_state.dart';
+import 'package:solar/gatepage.dart';
 
 
 class MQTTView extends StatefulWidget {
@@ -18,10 +19,30 @@ class _MQTTViewState extends State<MQTTView>{
   late MQTTManager manager;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final MQTTAppState appState = Provider.of<MQTTAppState>(context);
     currentAppState = appState;
-    final Scaffold scaffold = Scaffold(body: _buildColumn(),);
+    final Scaffold scaffold = Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Solar App'),
+        leading: Container(
+          child: Center(
+            child: Image(image: AssetImage('assets/Logo.png'),),
+          ),
+
+        ),
+        actions: <Widget>[
+          Icon(context.watch<MQTTAppState>().getIconData)
+        ],
+      ),
+      body: _buildColumn(),
+    );
     return scaffold;
   }
 
@@ -98,16 +119,6 @@ class _MQTTViewState extends State<MQTTView>{
     );
   }
 
-  IconData _iconMqttState(MQTTAppConnectionState state){
-    switch (state) {
-      case MQTTAppConnectionState.connected:
-        return Icons.cloud_done;
-      case MQTTAppConnectionState.disconnected:
-        return Icons.cloud_off;
-      case MQTTAppConnectionState.connecting:
-        return Icons.cloud_upload;
-    }
-  }
 
   void _configureAndConnect(){
     manager = MQTTManager(
@@ -128,15 +139,5 @@ class _MQTTViewState extends State<MQTTView>{
   void _publishMessage(String text)
   {
     manager.publish(text);
-  }
-}
-
-class GatePageState extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Center(
-      child: Text(context.watch<MQTTAppState>().getReceivedText),
-    );
   }
 }

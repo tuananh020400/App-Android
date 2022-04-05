@@ -10,13 +10,11 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
-      title: 'SolarApp',
-      theme: ThemeData(
-        primaryColor: Colors.red,
-      ),
       home: ChangeNotifierProvider(
-        create: (_) => MQTTAppState(),
-        child: MQTTView(),
+        create: (context) => MQTTAppState(),
+        child: MaterialApp(
+          home: MQTTView(),
+        ),
       ),
     );
   }
