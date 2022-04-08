@@ -7,20 +7,18 @@ enum MQTTAppConnectionState {connected, disconnected, connecting}
 class MQTTAppState with ChangeNotifier{
   MQTTAppConnectionState _appConnectionState = MQTTAppConnectionState.disconnected;
   String _receivedText = '';
-  String _historyText = '';
   var _user;
-  String _userName = '';
-  String _userEmail = '';
-  int _userNhietDo = 0;
+  dynamic _userNhietDo = 0;
+  dynamic _userDoAm = 0;
+  dynamic _userDoAmDat = 0;
   IconData _data = Icons.cloud_off;
 
   void setReceivedText(String text){
     _receivedText = text;
     _user = jsonDecode(_receivedText);
-    _userName = _user['name'];
-    _userEmail = _user['email'];
     _userNhietDo = _user['nhietdo'];
-    _historyText = _historyText + '\n' + _receivedText;
+    _userDoAm = _user['doam'];
+    _userDoAmDat = _user['doamdat'];
     notifyListeners();
   }
 
@@ -40,10 +38,9 @@ class MQTTAppState with ChangeNotifier{
     notifyListeners();
   }
   String get getReceivedText => _receivedText;
-  String get getHistotyText => _historyText;
   MQTTAppConnectionState get getAppConnectionState => _appConnectionState;
   IconData get getIconData => _data;
-  String get getUserName => _userName;
-  String get getUserEmail => _userEmail;
-  int get getUserNhietDo => _userNhietDo;
+  dynamic get getUserNhietDo => _userNhietDo;
+  dynamic get getUserDoAm => _userDoAm;
+  dynamic get getUserDoAmDat => _userDoAmDat;
 }

@@ -10,7 +10,7 @@ class GatePage extends StatefulWidget{
 
 class _GatePageState extends State<GatePage>{
   late MQTTAppState currentAppState;
-  late MQTTManager manager;
+  late MQTTManager _manager;
   @override
   Widget build(BuildContext context) {
     final MQTTAppState appState = Provider.of<MQTTAppState>(context);
@@ -25,35 +25,9 @@ class _GatePageState extends State<GatePage>{
       body: Column(
         children: <Widget>[
           Padding(padding: EdgeInsets.all(5)),
-          _buildConnectButton(currentAppState.getAppConnectionState),
           _buildJson(),
         ],
       ),
-    );
-  }
-
-  Widget _buildConnectButton(MQTTAppConnectionState state){
-    return Row(
-      children: <Widget>[
-        Expanded(
-            child: RaisedButton(
-              color: Colors.lightGreenAccent,
-              child: const Text('Connect'),
-              onPressed: state == MQTTAppConnectionState.disconnected? _configureAndConnect : null,
-            )),
-        const SizedBox(width: 10,),
-        Expanded(
-            child: RaisedButton(
-              color: Colors.red,
-              child: const Text('Disconnect'),
-              onPressed:(){
-                if(state == MQTTAppConnectionState.connected)
-                  _disconnect();
-                else
-                  return null;
-              }
-            ))
-      ],
     );
   }
 
@@ -70,23 +44,19 @@ class _GatePageState extends State<GatePage>{
               center: Text("Nhiệt độ"),
             ),
         ),
+        Expanded(
+          child: RaisedButton(
+            child: const Text('Send Text'),
+            onPressed: (){
+              setState(() {
+                print('alo');
+                _manager.publish("ALOALOALO123");
+              });
+            },
+          ),
+        )
       ],
     );
   }
 
-  void _configureAndConnect(){
-    manager = MQTTManager(
-      host: 'broker.emqx.io',
-      topicpub: 'publish',
-      topicsub: 'subscribe',
-      identifier: 'My App Flutter',
-      state: currentAppState,
-    );
-    manager.initializeMQTTClient();
-    manager.connect();
-  }
-
-  void _disconnect(){
-    manager.disconnect();
-  }
 }
