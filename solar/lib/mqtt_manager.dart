@@ -72,9 +72,6 @@ class MQTTManager{
   }
 
   void onDisconnected(){
-    if(_client!.connectionStatus!.returnCode == MqttConnectReturnCode.noneSpecified){
-      print('OnDisconnected callback is solicited, this is correct');
-    }
     _currentState.setAppConnectionState(MQTTAppConnectionState.disconnected);
   }
 

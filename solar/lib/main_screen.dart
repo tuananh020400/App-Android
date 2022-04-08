@@ -1,9 +1,9 @@
-import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:solar/mqtt_manager.dart';
 import 'package:solar/mqtt_app_state.dart';
 import 'package:solar/gatepage.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 
 class MQTTView extends StatefulWidget {
@@ -85,14 +85,10 @@ class _MQTTViewState extends State<MQTTView>{
   }
 
   Widget _buildGate(){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Padding(padding: const EdgeInsets.all(5)),
+    if(currentAppState.getAppConnectionState == MQTTAppConnectionState.connected) {
+      return
         InkWell(
-            onTap: (){
-              print('Alo');
+            onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => GatePage()));
             },
@@ -103,12 +99,113 @@ class _MQTTViewState extends State<MQTTView>{
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(20)
               ),
-              child: Text('Gate way', style: (TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),),
-            )
-        ),
-      ],
-    );
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    child: Text('GateWay', style: TextStyle(color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold),),
+                  ),
+                  Padding(padding: EdgeInsets.all(10)),
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        CircularPercentIndicator(
+                          radius: 45,
+                          percent: currentAppState.getUserNhietDo.toDouble() / 100,
+                          progressColor: Colors.red,
+                          backgroundColor: Colors.deepPurple.shade100,
+                          circularStrokeCap: CircularStrokeCap.round,
+                          center: Text("Nhiệt độ",style: TextStyle(color: Colors.white, fontSize: 15,fontWeight: FontWeight.bold),),
+                        ),
+                        const SizedBox(width: 10,),
 
+                        CircularPercentIndicator(
+                          radius: 45,
+                          percent: currentAppState.getUserNhietDo.toDouble() / 100,
+                          progressColor: Colors.red,
+                          backgroundColor: Colors.deepPurple.shade100,
+                          circularStrokeCap: CircularStrokeCap.round,
+                          center: Text("Độ ẩm", style: TextStyle(color: Colors.white, fontSize: 15,fontWeight: FontWeight.bold),),
+                        ),
+                        const SizedBox(width: 10,),
+                        CircularPercentIndicator(
+                          radius: 45,
+                          percent: currentAppState.getUserNhietDo.toDouble() / 100,
+                          progressColor: Colors.red,
+                          backgroundColor: Colors.deepPurple.shade100,
+                          circularStrokeCap: CircularStrokeCap.round,
+                          center: Text("Độ ẩm đất",style: TextStyle(color: Colors.white, fontSize: 15,fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
+        );
+    }
+    else{
+      return Container(
+        padding: EdgeInsets.all(40),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(20)
+        ),
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: Text('GateWay', style: TextStyle(color: Colors.white38,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),),
+            ),
+            Padding(padding: EdgeInsets.all(10)),
+            Row(
+                children: <Widget>[
+                  Expanded(child: Container(
+                    child:
+                    CircularPercentIndicator(
+                      radius: 50,
+                      percent: 0,
+                      progressColor: Colors.red,
+                      backgroundColor: Colors.white38,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      center: Text("Nhiệt độ",style: TextStyle(color: Colors.white38, fontSize: 15,fontWeight: FontWeight.bold),),
+                    ),
+                  ),),
+                  const SizedBox(width: 10,),
+
+                  Expanded(child: Container(
+                    child:
+                    CircularPercentIndicator(
+                      radius: 50,
+                      percent: 0,
+                      progressColor: Colors.red,
+                      backgroundColor: Colors.white38,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      center: Text("Nhiệt độ",style: TextStyle(color: Colors.white38, fontSize: 15,fontWeight: FontWeight.bold),),
+                    ),
+                  ),),
+                  const SizedBox(width: 10,),
+                  Expanded(child: Container(
+                    child:
+                    CircularPercentIndicator(
+                      radius: 50,
+                      percent: 0,
+                      progressColor: Colors.red,
+                      backgroundColor: Colors.white38,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      center: Text("Nhiệt độ",style: TextStyle(color: Colors.white38, fontSize: 15,fontWeight: FontWeight.bold),),
+                    ),
+                  ),),
+                  const SizedBox(width: 10,),
+                ],
+              ),
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildScrollableTextWith(String text){
@@ -139,11 +236,6 @@ class _MQTTViewState extends State<MQTTView>{
 
   void _disconnect(){
     manager.disconnect();
-  }
-
-  void _publishMessage(String text)
-  {
-    manager.publish(text);
   }
 }
 

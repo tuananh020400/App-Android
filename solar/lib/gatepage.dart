@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solar/main_screen.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:solar/mqtt_app_state.dart';
 import 'package:solar/mqtt_manager.dart';
@@ -46,7 +46,12 @@ class _GatePageState extends State<GatePage>{
             child: RaisedButton(
               color: Colors.red,
               child: const Text('Disconnect'),
-              onPressed: state == MQTTAppConnectionState.connected? _disconnect : null,
+              onPressed:(){
+                if(state == MQTTAppConnectionState.connected)
+                  _disconnect();
+                else
+                  return null;
+              }
             ))
       ],
     );
@@ -56,15 +61,15 @@ class _GatePageState extends State<GatePage>{
     return Row(
       children: [
         Expanded(
-          child: Center(
-            child: Text(currentAppState.getUserName),
-          )),
-        Padding(padding: EdgeInsets.all(5)),
-        Expanded(
-          child: Center(
-              child: Text(currentAppState.getUserEmail),
-          ),
-    )
+            child: CircularPercentIndicator(
+              radius: 60,
+              percent: currentAppState.getUserNhietDo.toDouble()/100,
+              progressColor: Colors.red,
+              backgroundColor: Colors.deepPurple.shade100,
+              circularStrokeCap: CircularStrokeCap.round,
+              center: Text("Nhiệt độ"),
+            ),
+        ),
       ],
     );
   }

@@ -11,6 +11,7 @@ class MQTTAppState with ChangeNotifier{
   var _user;
   String _userName = '';
   String _userEmail = '';
+  int _userNhietDo = 0;
   IconData _data = Icons.cloud_off;
 
   void setReceivedText(String text){
@@ -18,6 +19,7 @@ class MQTTAppState with ChangeNotifier{
     _user = jsonDecode(_receivedText);
     _userName = _user['name'];
     _userEmail = _user['email'];
+    _userNhietDo = _user['nhietdo'];
     _historyText = _historyText + '\n' + _receivedText;
     notifyListeners();
   }
@@ -43,4 +45,5 @@ class MQTTAppState with ChangeNotifier{
   IconData get getIconData => _data;
   String get getUserName => _userName;
   String get getUserEmail => _userEmail;
+  int get getUserNhietDo => _userNhietDo;
 }
