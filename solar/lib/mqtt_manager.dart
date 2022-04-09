@@ -32,15 +32,6 @@ class MQTTManager{
 
     _client!.onConnected = onConnected;
     _client!.onSubscribed = onSubscribed;
-
-    final MqttConnectMessage mess = MqttConnectMessage()
-        .withClientIdentifier(_identifier)
-        .withWillTopic('willtopic')
-        .withWillMessage('My Will message')
-        .startClean()
-        .withWillQos(MqttQos.atLeastOnce);
-    print('Connecting to emqx client');
-    _client!.connectionMessage = mess;
   }
 
   void connect() async {
@@ -50,7 +41,7 @@ class MQTTManager{
       _currentState.setAppConnectionState(MQTTAppConnectionState.connecting);
       await _client!.connect();
     } on Exception catch (e){
-      print('Client exception - $e');
+      print('Ngat ket noi');
       disconnect();
     }
   }

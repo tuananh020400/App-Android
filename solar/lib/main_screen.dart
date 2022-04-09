@@ -113,7 +113,7 @@ class _MQTTViewState extends State<MQTTView>{
                           child: Container(
                             child: CircularPercentIndicator(
                               radius: 50,
-                              percent: _currentAppState.getUserDoAm.toDouble() / 100,
+                              percent: _currentAppState.getUserNhietDo.toDouble() / 100,
                               progressColor: Colors.red,
                               backgroundColor: Colors.deepPurple.shade100,
                               circularStrokeCap: CircularStrokeCap.round,
@@ -140,7 +140,7 @@ class _MQTTViewState extends State<MQTTView>{
                           child: Container(
                             child: CircularPercentIndicator(
                               radius: 50,
-                              percent: _currentAppState.getUserNhietDo.toDouble() / 100,
+                              percent: _currentAppState.getUserDoAmDat.toDouble() / 100,
                               progressColor: Colors.red,
                               backgroundColor: Colors.deepPurple.shade100,
                               circularStrokeCap: CircularStrokeCap.round,
@@ -177,6 +177,19 @@ class _MQTTViewState extends State<MQTTView>{
                         ),
                       ),
                     ],
+                  ),
+                  Container(
+                    child: Container(
+                      child: RaisedButton(
+                        child: const Text('Send Text'),
+                        onPressed: (){
+                          setState(() {
+                            print('alo');
+                            _manager.publish("ALOALOALO123");
+                          });
+                        },
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -268,7 +281,7 @@ class _MQTTViewState extends State<MQTTView>{
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       );

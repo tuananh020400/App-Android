@@ -10,12 +10,15 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
-      home: ChangeNotifierProvider(
-        create: (context) => MQTTAppState(),
-        child: MaterialApp(
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => MQTTAppState()),
+          //ChangeNotifierProvider(create: (context) => MQTTViewState())
+        ],
+        child:  MaterialApp(
           home: MQTTView(),
         ),
-      ),
+      )
     );
   }
 }
