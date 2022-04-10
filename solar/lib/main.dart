@@ -10,8 +10,7 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return MaterialApp(
-      home: MultiProvider(
+    return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => MQTTAppState()),
           ChangeNotifierProvider(create: (context) => MQTT())
@@ -19,7 +18,6 @@ class MyApp extends StatelessWidget{
         child:  MaterialApp(
           home: MQTTView(),
         ),
-      )
-    );
+      );
   }
 }
