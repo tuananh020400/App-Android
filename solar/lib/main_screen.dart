@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:solar/mqtt.dart';
 import 'package:solar/mqtt_manager.dart';
 import 'package:solar/mqtt_app_state.dart';
 import 'package:solar/gatepage.dart';
@@ -17,6 +18,7 @@ class MQTTView extends StatefulWidget {
 class _MQTTViewState extends State<MQTTView>{
   late MQTTAppState _currentAppState;
   late MQTTManager _manager;
+  late MQTT _mqtt;
 
   @override
   void initState() {
@@ -32,6 +34,8 @@ class _MQTTViewState extends State<MQTTView>{
   Widget build(BuildContext context) {
     final MQTTAppState appState = Provider.of<MQTTAppState>(context);
     _currentAppState = appState;
+    final MQTT mqtt = Provider.of<MQTT>(context);
+    _mqtt = mqtt;
     final Scaffold scaffold = Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -298,10 +302,15 @@ class _MQTTViewState extends State<MQTTView>{
     );
     _manager.initializeMQTTClient();
     _manager.connect();
+    _mqtt.setAppState(_currentAppState);
+    _mqtt.setManager(_manager);
   }
 
   void _disconnect(){
     _manager.disconnect();
+  }
+  void publish(String text){
+    _manager.publish(text);
   }
 }
 
