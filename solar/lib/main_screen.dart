@@ -5,6 +5,7 @@ import 'package:solar/mqtt_manager.dart';
 import 'package:solar/mqtt_app_state.dart';
 import 'package:solar/gatepage.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'animatedbutton.dart';
 
 
 class MQTTView extends StatefulWidget {
@@ -39,6 +40,7 @@ class _MQTTViewState extends State<MQTTView>{
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Solar App'),
+        backgroundColor: Color(0xFF292639),
         leading: Container(
           child: Center(
             child: Image(image: AssetImage('assets/Logo.png'),),
@@ -57,33 +59,31 @@ class _MQTTViewState extends State<MQTTView>{
   Widget _buildColumn(){
     return Column(
       children: <Widget>[
-        Padding(padding: EdgeInsets.all(10)),
+        Padding(padding: EdgeInsets.all(1)),
         _buildConnectButton(_currentAppState.getAppConnectionState),
-        Padding(padding: EdgeInsets.all(10)),
+        Padding(padding: EdgeInsets.all(1)),
         _buildGardenButton(_currentAppState.getAppConnectionState),
-        Padding(padding: EdgeInsets.all(10)),
+        Padding(padding: EdgeInsets.all(1)),
       ],
     );
   }
 
   Widget _buildConnectButton(MQTTAppConnectionState state){
-    return Row(
-      children: <Widget>[
-        Expanded(
-            child: RaisedButton(
-              color: Colors.lightGreenAccent,
-              child: Icon(Icons.connected_tv),
-              onPressed: state == MQTTAppConnectionState.disconnected? _configureAndConnect : null,
-            )),
-        const SizedBox(width: 10,),
-        Expanded(
-            child: RaisedButton(
-              color: Colors.red,
-              child: const Text('Disconnect'),
-              onPressed: state == MQTTAppConnectionState.connected? _disconnect : null,
-            ),
-        )
-      ],
+    return AnimatedToggle(
+      values: ['Disconnect', 'Connect'],
+      Stringtext: [_currentAppState.getConnectionStringText,_currentAppState.getConnectionStringText],
+      textColor: Colors.white,
+      backgroundColor: Color(0xFF292639),
+      buttonColor: Colors.blue,
+      onToggleCallback: (index) {
+        setState(() {});
+        if(index == 0){
+          _disconnect();
+        }
+        else if(index == 1){
+          _configureAndConnect();
+        }
+      },
     );
   }
 
@@ -98,36 +98,38 @@ class _MQTTViewState extends State<MQTTView>{
                 return null;
               }
             },
-            child: Container(
-              padding: EdgeInsets.all(40),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: state == MQTTAppConnectionState.connected? Colors.blue : Colors.grey,
-                  borderRadius: BorderRadius.circular(20)
-              ),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    child: Text('Vườn 1',
-                      style: TextStyle(
-                          color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: Container(
+                padding: EdgeInsets.all(40),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: state == MQTTAppConnectionState.connected? Color(0xFF292639) : Colors.grey,
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: Text('Vườn 1',
+                        style: TextStyle(
+                            color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(padding: EdgeInsets.all(10)),
-                  Row(
+                    Padding(padding: EdgeInsets.all(10)),
+                    Row(
                       children: <Widget>[
                         Expanded(
                           child: Container(
                             child: CircularPercentIndicator(
                               radius: 50,
-                              percent: _currentAppState.getUserNhietDo.toDouble() / 100,
+                              percent: state == MQTTAppConnectionState.connected?_currentAppState.getUserNhietDo.toDouble() / 100 : 0,
                               progressColor: Colors.red,
-                              backgroundColor: state == MQTTAppConnectionState.connected? Colors.deepPurple.shade100 : Colors.white38,
+                              backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                               circularStrokeCap: CircularStrokeCap.round,
-                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getUserNhietDo.toDouble()}°C" : "Nhiệt độ",
+                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getUserNhietDo.toInt()}°C" : "Nhiệt độ",
                                 style: TextStyle(
                                     color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                                     fontSize: 15,
@@ -141,9 +143,9 @@ class _MQTTViewState extends State<MQTTView>{
                           child: Container(
                             child: CircularPercentIndicator(
                               radius: 50,
-                              percent: _currentAppState.getUserDoAm.toDouble() / 100,
-                              progressColor: Colors.red,
-                              backgroundColor: state == MQTTAppConnectionState.connected? Colors.deepPurple.shade100 : Colors.white38,
+                              percent: state == MQTTAppConnectionState.connected? _currentAppState.getUserDoAm.toDouble() / 100 : 0,
+                              progressColor: Colors.blue,
+                              backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                               circularStrokeCap: CircularStrokeCap.round,
                               center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getUserDoAm.toDouble()}%" : "Độ ẩm",
                                 style: TextStyle(
@@ -158,9 +160,9 @@ class _MQTTViewState extends State<MQTTView>{
                           child: Container(
                             child: CircularPercentIndicator(
                               radius: 50,
-                              percent: _currentAppState.getUserDoAmDat.toDouble() / 100,
-                              progressColor: Colors.red,
-                              backgroundColor: state == MQTTAppConnectionState.connected? Colors.deepPurple.shade100 : Colors.white38,
+                              percent: state == MQTTAppConnectionState.connected? _currentAppState.getUserDoAmDat.toDouble() / 100 : 0,
+                              progressColor: Colors.blue,
+                              backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                               circularStrokeCap: CircularStrokeCap.round,
                               center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getUserDoAmDat.toDouble()}%" : "Độ ẩm đất",
                                 style: TextStyle(
@@ -172,35 +174,36 @@ class _MQTTViewState extends State<MQTTView>{
                         ),
                       ],
                     ),
-                  Padding(padding: EdgeInsets.all(5)),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          child: Center(
-                            child: const Text("Nhiệt độ",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                    Padding(padding: EdgeInsets.all(5)),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            child: Center(
+                              child: const Text("Nhiệt độ",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10,),
-                      Expanded(
-                        child: Container(
-                          child: Center(
-                            child: const Text("Độ ẩm",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        const SizedBox(width: 10,),
+                        Expanded(
+                          child: Container(
+                            child: Center(
+                              child: const Text("Độ ẩm",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10,),
-                      Expanded(
-                        child: Container(
-                          child: Center(
-                            child: const Text("Độ ẩm đất",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        const SizedBox(width: 10,),
+                        Expanded(
+                          child: Container(
+                            child: Center(
+                              child: const Text("Độ ẩm đất",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             )
         );

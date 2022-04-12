@@ -37,6 +37,8 @@ dependencies:
   mqtt_client: ^9.3.1
   provider: ^5.0.0
   percent_indicator: ^4.0.0
+  syncfusion_flutter_charts: ^20.1.47
+  lottie: ^1.2.2
 
 
 dev_dependencies:
@@ -68,6 +70,13 @@ flutter:
 
   assets:
     - assets/Logo.png
+    - assets/fan.json
+    - assets/in.json
+    - assets/out.json
+    - assets/benuoc.json
+    - assets/alo.json
+    - assets/water.json
+    - assets/drinkwater.json
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

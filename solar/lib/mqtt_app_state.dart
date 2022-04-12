@@ -11,7 +11,8 @@ class MQTTAppState with ChangeNotifier{
   dynamic _userNhietDo = 0;
   dynamic _userDoAm = 0;
   dynamic _userDoAmDat = 0;
-  IconData _data = Icons.cloud_off;
+  IconData _icon = Icons.cloud_off;
+  String _connectionStringText = 'Disconnected';
 
   void setReceivedText(String text){
     _receivedText = text;
@@ -26,21 +27,25 @@ class MQTTAppState with ChangeNotifier{
     _appConnectionState = state;
     switch (state) {
       case MQTTAppConnectionState.connected:
-        _data = Icons.cloud_done;
+        _icon = Icons.cloud_done;
+        _connectionStringText = 'Connected';
         break;
       case MQTTAppConnectionState.disconnected:
-        _data = Icons.cloud_off;
+        _icon = Icons.cloud_off;
+        _connectionStringText = 'Disconnected';
         break;
       case MQTTAppConnectionState.connecting:
-        _data = Icons.cloud_upload;
+        _icon = Icons.cloud_upload;
+        _connectionStringText = 'Connecting';
         break;
     }
     notifyListeners();
   }
   String get getReceivedText => _receivedText;
   MQTTAppConnectionState get getAppConnectionState => _appConnectionState;
-  IconData get getIconData => _data;
+  IconData get getIconData => _icon;
   dynamic get getUserNhietDo => _userNhietDo;
   dynamic get getUserDoAm => _userDoAm;
   dynamic get getUserDoAmDat => _userDoAmDat;
+  dynamic get getConnectionStringText => _connectionStringText;
 }
