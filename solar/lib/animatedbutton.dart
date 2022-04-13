@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 class AnimatedToggle extends StatefulWidget {
-  final List<dynamic> values;
-  final List<dynamic> Stringtext;
+  final List<dynamic> text;
+  final List<dynamic> buttonText;
   final ValueChanged onToggleCallback;
-  final Color backgroundColor;
-  final Color buttonColor;
-  final Color textColor;
+  final Color onColor;
+  final Color offColor;
+
+  final backgroundColor = Color(0xFF292636);
+  final textColor = Colors.white;
 
   AnimatedToggle({
-    required this.values,
-    required this.Stringtext,
+    required this.text,
+    required this.buttonText,
     required this.onToggleCallback,
-    required this.backgroundColor,
-    required this.buttonColor ,
-    required this.textColor,
+    required this.onColor,
+    required this.offColor,
   });
   @override
   _AnimatedToggleState createState() => _AnimatedToggleState();
@@ -48,11 +49,11 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(
-                  widget.values.length,
+                  widget.text.length,
                       (index) => Padding(
                     padding: EdgeInsets.symmetric(horizontal: width * 0.1),
                     child: Text(
-                      widget.values[index],
+                      widget.text[index],
                       style: TextStyle(
                         fontFamily: 'Rubik',
                         fontSize: width * 0.05,
@@ -75,14 +76,14 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
                 width: width * 0.5,
                 height: width * 0.13,
                 decoration: ShapeDecoration(
-                  color: initialPosition ?Colors.red : Colors.blue,
+                  color: initialPosition ?widget.offColor : widget.onColor,
                   shadows: null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(width * 0.1),
                   ),
                 ),
                 child: Text(
-                  initialPosition ? widget.Stringtext[1] : widget.Stringtext[0],
+                  initialPosition ? widget.buttonText[1] : widget.buttonText[0],
                   style: TextStyle(
                     fontFamily: 'Rubik',
                     fontSize: width * 0.045,

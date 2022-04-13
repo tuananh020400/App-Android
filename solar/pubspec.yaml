@@ -77,6 +77,10 @@ flutter:
     - assets/alo.json
     - assets/water.json
     - assets/drinkwater.json
+    - assets/light.json
+    - assets/binhnuoctuoicay.json
+    - assets/lightoff.json
+    - assets/fanoff.json
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

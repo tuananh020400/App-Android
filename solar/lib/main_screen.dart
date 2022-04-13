@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:solar/mqtt.dart';
 import 'package:solar/mqtt_manager.dart';
 import 'package:solar/mqtt_app_state.dart';
-import 'package:solar/gatepage.dart';
+import 'package:solar/node_page.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'animatedbutton.dart';
 
@@ -70,11 +70,10 @@ class _MQTTViewState extends State<MQTTView>{
 
   Widget _buildConnectButton(MQTTAppConnectionState state){
     return AnimatedToggle(
-      values: ['Disconnect', 'Connect'],
-      Stringtext: [_currentAppState.getConnectionStringText,_currentAppState.getConnectionStringText],
-      textColor: Colors.white,
-      backgroundColor: Color(0xFF292639),
-      buttonColor: Colors.blue,
+      text: ['Disconnect', 'Connect'],
+      buttonText: [_currentAppState.getConnectionStringText,_currentAppState.getConnectionStringText],
+      onColor: Colors.blue,
+      offColor: Colors.red,
       onToggleCallback: (index) {
         setState(() {});
         if(index == 0){
@@ -92,7 +91,7 @@ class _MQTTViewState extends State<MQTTView>{
             onTap: () {
               if(state == MQTTAppConnectionState.connected) {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => GatePage()));
+                    builder: (context) => NodePage()));
               }
               else{
                 return null;
@@ -125,11 +124,11 @@ class _MQTTViewState extends State<MQTTView>{
                           child: Container(
                             child: CircularPercentIndicator(
                               radius: 50,
-                              percent: state == MQTTAppConnectionState.connected?_currentAppState.getUserNhietDo.toDouble() / 100 : 0,
+                              percent: state == MQTTAppConnectionState.connected?_currentAppState.getGardent1.getNhietDo.toDouble() / 100 : 0,
                               progressColor: Colors.red,
                               backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                               circularStrokeCap: CircularStrokeCap.round,
-                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getUserNhietDo.toInt()}°C" : "Nhiệt độ",
+                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent1.getNhietDo.toInt()}°C" : "Nhiệt độ",
                                 style: TextStyle(
                                     color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                                     fontSize: 15,
@@ -143,11 +142,11 @@ class _MQTTViewState extends State<MQTTView>{
                           child: Container(
                             child: CircularPercentIndicator(
                               radius: 50,
-                              percent: state == MQTTAppConnectionState.connected? _currentAppState.getUserDoAm.toDouble() / 100 : 0,
+                              percent: state == MQTTAppConnectionState.connected? _currentAppState.getGardent1.getDoAm.toDouble() / 100 : 0,
                               progressColor: Colors.blue,
                               backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                               circularStrokeCap: CircularStrokeCap.round,
-                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getUserDoAm.toDouble()}%" : "Độ ẩm",
+                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent1.getDoAm.toDouble()}%" : "Độ ẩm",
                                 style: TextStyle(
                                     color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                                     fontSize: 15,
@@ -160,11 +159,11 @@ class _MQTTViewState extends State<MQTTView>{
                           child: Container(
                             child: CircularPercentIndicator(
                               radius: 50,
-                              percent: state == MQTTAppConnectionState.connected? _currentAppState.getUserDoAmDat.toDouble() / 100 : 0,
+                              percent: state == MQTTAppConnectionState.connected? _currentAppState.getGardent1.getDoAmDat.toDouble() / 100 : 0,
                               progressColor: Colors.blue,
                               backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                               circularStrokeCap: CircularStrokeCap.round,
-                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getUserDoAmDat.toDouble()}%" : "Độ ẩm đất",
+                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent1.getDoAmDat.toDouble()}%" : "Độ ẩm đất",
                                 style: TextStyle(
                                     color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                                     fontSize: 15,
