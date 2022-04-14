@@ -69,7 +69,7 @@ class _MQTTViewState extends State<MQTTView>{
   }
 
   Widget _buildConnectButton(MQTTAppConnectionState state){
-    return AnimatedToggle(
+    return ConnectButton(
       text: ['Disconnect', 'Connect'],
       buttonText: [_currentAppState.getConnectionStringText,_currentAppState.getConnectionStringText],
       onColor: Colors.blue,

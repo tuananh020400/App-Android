@@ -6,11 +6,6 @@ import 'package:solar/mqtt_app_state.dart';
 import 'animatedbutton.dart';
 import 'package:lottie/lottie.dart';
 
-// _buildNhietDo()
-// _buildDoAm()
-// _buildDoAmDat()
-// _buildTabView()
-
 class NodePage extends StatefulWidget{
   @override
   _NodePageState createState()  => _NodePageState();
@@ -63,7 +58,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
     return DefaultTabController(
         length: 3,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
           child: Column(
             children: [
               Container(
@@ -109,15 +104,20 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
 
   Widget _buildAuto(){
     return AnimatedToggle(
-      text: ['Auto', 'Manual'],
-      buttonText: ['Manual', 'Auto'],
+      text: [' Auto', 'Manual '],
+      buttonText: ['Auto', 'Manual'],
       onColor: Colors.blue,
       offColor: Colors.blue,
+      backgroundColor: Color(0xFF292636),
+      position: _mqtt.getAppState.getGardent1.getMode,
       onToggleCallback: (index) {
         setState(() {});
         print('$index');
         _mqtt.getManager.publish('$index');
+        _mqtt.getAppState.getGardent1.setMode( _mqtt.getAppState.getGardent1.getMode == 1? 0 : 1);
       },
+      width: MediaQuery.of(context).size.width,
+      hight: 70,
     );
   }
 
@@ -177,9 +177,9 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
   
   Widget _buildButton(){
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 0),
         child: Container(
-          height: 100,
+          height: 150,
           child: Row(
             children: [
               Expanded(
@@ -191,28 +191,51 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
                     child: Column(
                       children: [
                         Expanded(
-                          child: SizedBox(
-                            height: 50,
-                            width: 60,
-                            child: _mqtt.getAppState.getGardent1.getFanStatus == 1?
-                            Lottie.asset(
-                              'assets/fan.json',
-                            ) :
-                            Lottie.asset(
-                                'assets/fanoff.json',
-                                repeat: false,
-                              controller: _fanController,
-                              onLoaded: (composition){
-                                  _fanController.duration = composition.duration;
-                                  _fanController.forward();
-                                  _fanController.value = 0;
-                              }
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: AnimatedToggle(
+                                text: ['OFF','ON'],
+                                buttonText: ['ON','OFF'],
+                                onColor: Color(0xFF33EDAA),
+                                offColor: Colors.grey,
+                                backgroundColor: Colors.white,
+                                position: _mqtt.getAppState.getGardent1.getFanButton,
+                                onToggleCallback: (index){
+                                  setState(() {
+                                  });
+                                  _mqtt.getManager.publish('ON ${index}');
+                                  _mqtt.getAppState.getGardent1.setFanButton(_mqtt.getAppState.getGardent1.getFanButton == 1? 0: 1);
+                                },
+                                width: 30,
+                                hight: 20,
+                              ),
                             ),
-                          ),
+                        ),
+                        Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 50,
+                              width: 60,
+                              child: _mqtt.getAppState.getGardent1.getFanStatus == 1?
+                              Lottie.asset(
+                                'assets/fan.json',
+                              ) :
+                              Lottie.asset(
+                                  'assets/fanoff.json',
+                                  repeat: false,
+                                  controller: _fanController,
+                                  onLoaded: (composition){
+                                    _fanController.duration = composition.duration;
+                                    _fanController.forward();
+                                    _fanController.value = 0;
+                                  }
+                              ),
+                            ),
                         )
                       ],
                     ),
-                  )),
+                  ),
+              ),
               SizedBox(width: 10,),
               Expanded(
                   child: Container(
@@ -248,9 +271,19 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
                     ),
                     child: Column(
                       children: [
-                        Expanded(child: Lottie.asset(
-                            'assets/binhnuoctuoicay.json'
-                        )
+                        Expanded(child: _mqtt.getAppState.getGardent1.getPumpStatus == 1?
+                          Lottie.asset(
+                              'assets/binhnuoctuoicay.json'
+                          ):
+                          Lottie.asset(
+                            'assets/pumpoff.json',
+                            controller: _pumpController,
+                            onLoaded: (composition){
+                              _pumpController.duration = composition.duration;
+                              _pumpController.forward();
+                              _pumpController.value = 0;
+                            }
+                          )
                         )
                       ],
                     ),

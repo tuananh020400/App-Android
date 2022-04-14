@@ -7,7 +7,7 @@ enum MQTTAppConnectionState {connected, disconnected, connecting}
 class MQTTAppState with ChangeNotifier{
   MQTTAppConnectionState _appConnectionState = MQTTAppConnectionState.disconnected;
   String _receivedText = '';
-  Garden _garden1 = Garden(nhietDo: 0,doAmDat: 0,doAm: 0,lightStatus: 0,fanStatus: 0,pumStatus: 0);
+  Garden _garden1 = Garden(nhietDo: 0,doAmDat: 0,doAm: 0,lightStatus: 0,fanStatus: 0,pumStatus: 0, lightButton: 0, pumpButton: 0, fanButton: 0, mode: 0);
   var _json;
   IconData _icon = Icons.cloud_off;
   String _connectionStringText = 'Disconnected';
@@ -21,7 +21,11 @@ class MQTTAppState with ChangeNotifier{
       doAmDat: _json['doamdat'],
       lightStatus: _json['light'],
       fanStatus: _json['fan'],
-      pumStatus: _json['pump']
+      pumStatus: _json['pump'],
+      lightButton: _json['light'],
+      pumpButton: _json['pump'],
+      fanButton: _json['fan'],
+      mode: _json['mode']
     );
     notifyListeners();
   }
@@ -58,6 +62,10 @@ class Garden{
   int _lightStatus = 0;
   int _fanStatus = 0;
   int _pumpStatus = 0;
+  int _lightButton = 0;
+  int _fanButton = 0;
+  int _pumpButton = 0;
+  int _mode = 0;
   Garden({
     required dynamic nhietDo,
     required dynamic doAm,
@@ -65,18 +73,49 @@ class Garden{
     required int lightStatus,
     required int fanStatus,
     required int pumStatus,
+    required int lightButton,
+    required int fanButton,
+    required int pumpButton,
+    required int mode,
   }) :
         _nhietDo = nhietDo,
         _doAm = doAm,
         _doAmDat = doAmDat,
         _lightStatus = lightStatus,
         _pumpStatus = pumStatus,
-        _fanStatus = fanStatus;
+        _fanStatus = fanStatus,
+        _lightButton = lightButton,
+        _fanButton = fanButton,
+        _pumpButton = pumpButton,
+        _mode = mode;
+
+  void setLightButton(int lightButton){
+    _lightButton = lightButton;
+  }
+
+  void setFanButton(int fanButton){
+    _fanButton = fanButton;
+  }
+
+  void setPumpButton(int pumpButton){
+    _pumpButton = pumpButton;
+  }
+
+  void setMode(int mode){
+    _mode = mode;
+  }
 
   dynamic get getNhietDo => _nhietDo;
   dynamic get getDoAm => _doAm;
   dynamic get getDoAmDat => _doAmDat;
+
   int get getLightStatus => _lightStatus;
   int get getFanStatus => _fanStatus;
   int get getPumpStatus => _pumpStatus;
+
+  int get getLightButton => _lightButton;
+  int get getFanButton => _fanButton;
+  int get getPumpButton => _pumpButton;
+
+  int get getMode => _mode;
 }
