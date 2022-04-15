@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'mqtt.dart';
+import 'mqtt_app_state.dart';
+import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
 
 class LottieState extends StatefulWidget{
   @override
@@ -32,18 +36,26 @@ class _LottieState extends State<LottieState> with SingleTickerProviderStateMixi
     _mqtt = mqtt;
     MQTTAppState currentState = Provider.of<MQTTAppState>(context);
     _currentState = currentState;
-    return Column(
-        children: [
-          Lottie.asset(
-              'assets/benuoc.json',
-              controller: _controller,
-              onLoaded: (composition){
-                _controller.duration = composition.duration;
-                _controller.forward();
-                _controller.value = _mqtt.getAppState.getUserNhietDo.toDouble()/100;
-              }
-          ),
-          Text('${_controller.value = _mqtt.getAppState.getUserNhietDo.toDouble()/100}'),
-        ]);
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('GateWay',style: TextStyle(fontWeight: FontWeight.bold),),
+        ),
+        body: Column(
+            children: [
+              Lottie.asset(
+                  'assets/benuoc.json',
+                  controller: _controller,
+                  onLoaded: (composition){
+                    _controller.duration = composition.duration;
+                    _controller.forward();
+                    _controller.value = _mqtt.getAppState.getGardent1.getNhietDo.toDouble()/100;
+                  }
+              ),
+              Text('${_controller.value = _mqtt.getAppState.getGardent1.getNhietDo.toDouble()/100}'),
+            ]),
+      ),
+    );
   }
 }

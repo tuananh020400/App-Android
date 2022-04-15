@@ -7,7 +7,18 @@ enum MQTTAppConnectionState {connected, disconnected, connecting}
 class MQTTAppState with ChangeNotifier{
   MQTTAppConnectionState _appConnectionState = MQTTAppConnectionState.disconnected;
   String _receivedText = '';
-  Garden _garden1 = Garden(nhietDo: 0,doAmDat: 0,doAm: 0,lightStatus: 0,fanStatus: 0,pumStatus: 0, lightButton: 0, pumpButton: 0, fanButton: 0, mode: 0);
+  Garden _garden1 = Garden(
+      nhietDo: 0,
+      doAmDat: 0,
+      doAm: 0,
+      lightStatus: 0,
+      fanStatus: 0,
+      pumStatus: 0,
+      lightButton: 0,
+      pumpButton: 0,
+      fanButton: 0,
+      mode: 0
+  );
   var _json;
   IconData _icon = Icons.cloud_off;
   String _connectionStringText = 'Disconnected';

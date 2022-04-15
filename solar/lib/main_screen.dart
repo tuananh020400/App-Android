@@ -6,6 +6,7 @@ import 'package:solar/mqtt_app_state.dart';
 import 'package:solar/node_page.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'animatedbutton.dart';
+import 'gage_page.dart';
 
 
 class MQTTView extends StatefulWidget {
@@ -64,6 +65,7 @@ class _MQTTViewState extends State<MQTTView>{
         Padding(padding: EdgeInsets.all(1)),
         _buildGardenButton(_currentAppState.getAppConnectionState),
         Padding(padding: EdgeInsets.all(1)),
+        _buildGatePageButton(_currentAppState.getAppConnectionState)
       ],
     );
   }
@@ -206,6 +208,24 @@ class _MQTTViewState extends State<MQTTView>{
               ),
             )
         );
+  }
+
+  Widget _buildGatePageButton(MQTTAppConnectionState state){
+    return InkWell(
+      onTap: () {
+        if(state == MQTTAppConnectionState.connected) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => LottieState()));
+        }
+        else{
+          return null;
+        }
+      },
+      child: Container(
+        color: Colors.red,
+        child: Text('Hlee',style: TextStyle(color: Colors.red),),
+      ),
+    );
   }
 
   void _configureAndConnect(){

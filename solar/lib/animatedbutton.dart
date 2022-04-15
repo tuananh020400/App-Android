@@ -209,6 +209,3 @@ class _ConnectButtonState extends State<ConnectButton> {
     );
   }
 }
-
-
-
