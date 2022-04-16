@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:solar/Chart.dart';
 import 'package:solar/mqtt.dart';
 import 'package:solar/mqtt_app_state.dart';
-import 'animatedbutton.dart';
+import 'package:solar/animatedbutton.dart';
 import 'package:lottie/lottie.dart';
 
 class NodePage extends StatefulWidget{
@@ -45,7 +45,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Padding(padding: EdgeInsets.all(5)),
+              Padding(padding: EdgeInsets.all(10)),
               _buildTabView(),
               _buildAuto(),
               _buildButton()
@@ -65,14 +65,14 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
                 Container(
                     decoration: BoxDecoration(
                         color: Color(0xFF292639),
-                        borderRadius: BorderRadius.circular(20)
+                        borderRadius: BorderRadius.circular(30)
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(5),
                       child: TabBar(
                           indicator: BoxDecoration(
                               color: Colors.blue,
-                              borderRadius: BorderRadius.circular(20)),
+                              borderRadius: BorderRadius.circular(30)),
                           tabs: [
                             Tab(child: Text('Nhiệt độ',style: TextStyle(fontWeight: FontWeight.bold),),),
                             Tab(child: Text('Độ ẩm',style: TextStyle(fontWeight: FontWeight.bold),),),
@@ -80,7 +80,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
                           ]),
                     )
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 20,),
                 Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -110,10 +110,10 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
       onColor: Colors.blue,
       offColor: Colors.blue,
       backgroundColor: Color(0xFF292636),
-      position: _mqtt.getAppState.getGardent1.getMode,
+      position: _mqtt.getAppState.getGardent.getMode,
       onToggleCallback: (index) {
         setState(() {});
-        _mqtt.getAppState.getGardent1.setMode( _mqtt.getAppState.getGardent1.getMode == 1? 0 : 1);
+        _mqtt.getAppState.getGardent.setMode( _mqtt.getAppState.getGardent.getMode == 1? 0 : 1);
         index == 1?
             _mqtt.getManager.publish("Manual Mode"):
             _mqtt.getManager.publish("Auto Mode");
@@ -124,7 +124,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
   }
 
   Widget _buildNhietDo(){
-    return Chart(data: _mqtt.getAppState.getGardent1.getNhietDo.toDouble());
+    return Chart(data: _mqtt.getAppState.getGardent.getNhietDo.toDouble());
   }
 
   Widget _buildDoAm() {
@@ -139,7 +139,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
             child: Lottie.asset('assets/in.json'),
           ),
           Center(
-            child: Text('${_mqtt.getAppState.getGardent1.getDoAm}%',
+            child: Text('${_mqtt.getAppState.getGardent.getDoAm}%',
               style: TextStyle(
                 color: Color(0xFF0D3770),
                 fontSize: 50,
@@ -164,7 +164,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
             child: Lottie.asset('assets/in.json'),
           ),
           Center(
-            child: Text('${_mqtt.getAppState.getGardent1.getDoAmDat}%',
+            child: Text('${_mqtt.getAppState.getGardent.getDoAmDat}%',
               style: TextStyle(
                 color: Color(0xFF0D3770),
                 fontSize: 50,
@@ -196,7 +196,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
                         child: SizedBox(
                           height: 50,
                           width: 60,
-                          child: _mqtt.getAppState.getGardent1.getFanStatus == 1?
+                          child: _mqtt.getAppState.getGardent.getFanStatus == 1?
                           Lottie.asset(
                             'assets/fan.json',
                           ) :
@@ -212,18 +212,19 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
                           ),
                         ),
                       ),
+                      _mqtt.getAppState.getGardent.getMode == 1?
                       Padding(
                           padding: const EdgeInsets.only(bottom: 20),
                           child: CupertinoSwitch(
-                              value: _mqtt.getAppState.getGardent1.getFanButton == 1? true : false,
+                              value: _mqtt.getAppState.getGardent.getFanButton == 1? true : false,
                               onChanged: (index){
                                 setState(() {});
-                                _mqtt.getAppState.getGardent1.setFanButton(_mqtt.getAppState.getGardent1.getFanButton == 1? 0:1);
+                                _mqtt.getAppState.getGardent.setFanButton(_mqtt.getAppState.getGardent.getFanButton == 1? 0:1);
                                 index == true?
                                   _mqtt.getManager.publish('Fan on'):
                                   _mqtt.getManager.publish('Fan off');
                               }),
-                      )
+                      ) : SizedBox.shrink(),
                     ],
                   ),
                 )),
@@ -236,7 +237,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
                   ),
                   child: Column(
                     children: [
-                      Expanded(child: _mqtt.getAppState.getGardent1.getLightStatus == 1?
+                      Expanded(child: _mqtt.getAppState.getGardent.getLightStatus == 1?
                         Lottie.asset(
                             'assets/light.json',
                             controller: _lightController,
@@ -250,19 +251,20 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
                             'assets/lightoff.json',
                             repeat: false
                         )),
+                      _mqtt.getAppState.getGardent.getMode == 1?
                       Padding(
                           padding: const EdgeInsets.only(bottom: 20),
                           child: CupertinoSwitch(
-                            value: _mqtt.getAppState.getGardent1.getLightButton == 1? true:false,
+                            value: _mqtt.getAppState.getGardent.getLightButton == 1? true:false,
                             onChanged: (index){
                               setState(() {});
-                              _mqtt.getAppState.getGardent1.setLightButton(_mqtt.getAppState.getGardent1.getLightButton == 1? 0:1);
+                              _mqtt.getAppState.getGardent.setLightButton(_mqtt.getAppState.getGardent.getLightButton == 1? 0:1);
                               index == true?
                                   _mqtt.getManager.publish('Light on'):
                                   _mqtt.getManager.publish('Light off');
                             },
                           ),
-                      )
+                      ) : SizedBox.shrink()
                     ],
                   ),
                 )),
@@ -275,7 +277,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
                   ),
                   child: Column(
                     children: [
-                      Expanded(child: _mqtt.getAppState.getGardent1.getPumpStatus == 1?
+                      Expanded(child: _mqtt.getAppState.getGardent.getPumpStatus == 1?
                           Lottie.asset(
                           'assets/binhnuoctuoicay.json'
                       ):
@@ -292,17 +294,20 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin{
                               )
                               ,)
                       ),
+                      _mqtt.getAppState.getGardent.getMode == 1?
                       Padding(
                           padding: const EdgeInsets.only(bottom: 20),
                           child: CupertinoSwitch(
-                              value: _mqtt.getAppState.getGardent1.getPumpButton == 1? true : false,
+                              value: _mqtt.getAppState.getGardent.getPumpButton == 1? true : false,
                               onChanged: (index){
                                 setState(() {});
-                                _mqtt.getAppState.getGardent1.setPumpButton(_mqtt.getAppState.getGardent1.getPumpButton == 1? 0 : 1);
+                                _mqtt.getAppState.getGardent.setPumpButton(_mqtt.getAppState.getGardent.getPumpButton == 1? 0 : 1);
                                 index == true?
                                   _mqtt.getManager.publish('Pump on'):
                                   _mqtt.getManager.publish('Pump off');
-                              }))
+                              }
+                              ),
+                      ): SizedBox.shrink(),
                     ],
                   ),
                 )),

@@ -36,26 +36,46 @@ class _LottieState extends State<LottieState> with SingleTickerProviderStateMixi
     _mqtt = mqtt;
     MQTTAppState currentState = Provider.of<MQTTAppState>(context);
     _currentState = currentState;
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          backgroundColor: Color(0xFF292636),
           title: Text('GateWay',style: TextStyle(fontWeight: FontWeight.bold),),
+          actions: <Widget>[
+            Icon(_mqtt.getAppState.getIconData)
+          ],
         ),
-        body: Column(
-            children: [
-              Lottie.asset(
-                  'assets/benuoc.json',
-                  controller: _controller,
-                  onLoaded: (composition){
-                    _controller.duration = composition.duration;
-                    _controller.forward();
-                    _controller.value = _mqtt.getAppState.getGardent1.getNhietDo.toDouble()/100;
-                  }
-              ),
-              Text('${_controller.value = _mqtt.getAppState.getGardent1.getNhietDo.toDouble()/100}'),
-            ]),
-      ),
+        body: Padding(
+          padding: EdgeInsets.all(10),
+          child: Container(
+            alignment: Alignment.topCenter,
+            height: 500,width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Color(0xFF292636),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+                children: [
+                  Container(
+                    width: 150,
+                        alignment: Alignment.topLeft,
+                        child: Lottie.asset(
+                            'assets/benuoc.json',
+                            controller: _controller,
+                            onLoaded: (composition){
+                              _controller.duration = composition.duration;
+                              _controller.forward();
+                              _controller.value = _mqtt.getAppState.getGardent1.getNhietDo.toDouble()/100;
+                            }
+                        ),
+                  ),
+                  Container(
+                    width: 60,
+                    child: Text('${_mqtt.getAppState.getGardent1.getNhietDo}%'),
+                  )
+                ]),
+          ),
+        )
     );
   }
 }

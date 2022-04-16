@@ -7,6 +7,18 @@ enum MQTTAppConnectionState {connected, disconnected, connecting}
 class MQTTAppState with ChangeNotifier{
   MQTTAppConnectionState _appConnectionState = MQTTAppConnectionState.disconnected;
   String _receivedText = '';
+  Garden _garden = Garden(
+      nhietDo: 0,
+      doAmDat: 0,
+      doAm: 0,
+      lightStatus: 0,
+      fanStatus: 0,
+      pumStatus: 0,
+      lightButton: 0,
+      pumpButton: 0,
+      fanButton: 0,
+      mode: 0
+  );
   Garden _garden1 = Garden(
       nhietDo: 0,
       doAmDat: 0,
@@ -26,7 +38,8 @@ class MQTTAppState with ChangeNotifier{
   void setReceivedText(String text){
     _receivedText = text;
     _json = jsonDecode(_receivedText);
-    _garden1 = Garden(
+
+    _garden = Garden(
       nhietDo: _json['nhietdo'],
       doAm: _json['doam'],
       doAmDat: _json['doamdat'],
@@ -37,6 +50,19 @@ class MQTTAppState with ChangeNotifier{
       pumpButton: _json['pump'],
       fanButton: _json['fan'],
       mode: _json['mode']
+    );
+
+    _garden1 = Garden(
+        nhietDo: _json['nhietdo1'],
+        doAm: _json['doam1'],
+        doAmDat: _json['doamdat1'],
+        lightStatus: _json['light1'],
+        fanStatus: _json['fan1'],
+        pumStatus: _json['pump1'],
+        lightButton: _json['light1'],
+        pumpButton: _json['pump1'],
+        fanButton: _json['fan1'],
+        mode: _json['mode1']
     );
     notifyListeners();
   }
@@ -63,6 +89,7 @@ class MQTTAppState with ChangeNotifier{
   MQTTAppConnectionState get getAppConnectionState => _appConnectionState;
   IconData get getIconData => _icon;
   dynamic get getConnectionStringText => _connectionStringText;
+  Garden get getGardent => _garden;
   Garden get getGardent1 => _garden1;
 }
 

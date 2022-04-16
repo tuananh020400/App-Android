@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:solar/mqtt.dart';
 import 'package:solar/mqtt_manager.dart';
 import 'package:solar/mqtt_app_state.dart';
-import 'package:solar/node_page.dart';
+import 'package:solar/Node/node_page.dart';
+import 'package:solar/Node/node_page1.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'animatedbutton.dart';
 import 'gage_page.dart';
@@ -60,12 +63,12 @@ class _MQTTViewState extends State<MQTTView>{
   Widget _buildColumn(){
     return Column(
       children: <Widget>[
-        Padding(padding: EdgeInsets.all(1)),
         _buildConnectButton(_currentAppState.getAppConnectionState),
+        _buildGatePageButton(_currentAppState.getAppConnectionState),
         Padding(padding: EdgeInsets.all(1)),
         _buildGardenButton(_currentAppState.getAppConnectionState),
         Padding(padding: EdgeInsets.all(1)),
-        _buildGatePageButton(_currentAppState.getAppConnectionState)
+        _buildGardenButton1(_currentAppState.getAppConnectionState),
       ],
     );
   }
@@ -102,7 +105,7 @@ class _MQTTViewState extends State<MQTTView>{
             child: Padding(
               padding: EdgeInsets.all(5),
               child: Container(
-                padding: EdgeInsets.all(40),
+                padding: EdgeInsets.only(top: 30,bottom: 20,left: 30, right: 30),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     color: state == MQTTAppConnectionState.connected? Color(0xFF292639) : Colors.grey,
@@ -125,12 +128,12 @@ class _MQTTViewState extends State<MQTTView>{
                         Expanded(
                           child: Container(
                             child: CircularPercentIndicator(
-                              radius: 50,
-                              percent: state == MQTTAppConnectionState.connected?_currentAppState.getGardent1.getNhietDo.toDouble() / 100 : 0,
+                              radius: 100,
+                              percent: state == MQTTAppConnectionState.connected?_currentAppState.getGardent.getNhietDo.toDouble() / 100 : 0,
                               progressColor: Colors.red,
                               backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                               circularStrokeCap: CircularStrokeCap.round,
-                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent1.getNhietDo.toInt()}°C" : "Nhiệt độ",
+                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent.getNhietDo.toInt()}°C" : "Nhiệt độ",
                                 style: TextStyle(
                                     color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                                     fontSize: 15,
@@ -143,12 +146,12 @@ class _MQTTViewState extends State<MQTTView>{
                         Expanded(
                           child: Container(
                             child: CircularPercentIndicator(
-                              radius: 50,
-                              percent: state == MQTTAppConnectionState.connected? _currentAppState.getGardent1.getDoAm.toDouble() / 100 : 0,
+                              radius: 100,
+                              percent: state == MQTTAppConnectionState.connected? _currentAppState.getGardent.getDoAm.toDouble() / 100 : 0,
                               progressColor: Colors.blue,
                               backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                               circularStrokeCap: CircularStrokeCap.round,
-                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent1.getDoAm.toDouble()}%" : "Độ ẩm",
+                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent.getDoAm.toDouble()}%" : "Độ ẩm",
                                 style: TextStyle(
                                     color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                                     fontSize: 15,
@@ -160,12 +163,12 @@ class _MQTTViewState extends State<MQTTView>{
                         Expanded(
                           child: Container(
                             child: CircularPercentIndicator(
-                              radius: 50,
-                              percent: state == MQTTAppConnectionState.connected? _currentAppState.getGardent1.getDoAmDat.toDouble() / 100 : 0,
+                              radius: 100,
+                              percent: state == MQTTAppConnectionState.connected? _currentAppState.getGardent.getDoAmDat.toDouble() / 100 : 0,
                               progressColor: Colors.blue,
                               backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                               circularStrokeCap: CircularStrokeCap.round,
-                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent1.getDoAmDat.toDouble()}%" : "Độ ẩm đất",
+                              center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent.getDoAmDat.toDouble()}%" : "Độ ẩm đất",
                                 style: TextStyle(
                                     color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
                                     fontSize: 15,
@@ -210,6 +213,128 @@ class _MQTTViewState extends State<MQTTView>{
         );
   }
 
+  Widget _buildGardenButton1(MQTTAppConnectionState state){
+    return InkWell(
+        onTap: () {
+          if(state == MQTTAppConnectionState.connected) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => NodePage1()));
+          }
+          else{
+            return null;
+          }
+        },
+        child: Padding(
+          padding: EdgeInsets.all(5),
+          child: Container(
+            padding: EdgeInsets.only(top: 30,bottom: 20,left: 30, right: 30),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: state == MQTTAppConnectionState.connected? Color(0xFF292639) : Colors.grey,
+                borderRadius: BorderRadius.circular(10)
+            ),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: Text('Vườn 2',
+                    style: TextStyle(
+                        color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(10)),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        child: CircularPercentIndicator(
+                          radius: 100,
+                          percent: state == MQTTAppConnectionState.connected?_currentAppState.getGardent1.getNhietDo.toDouble() / 100 : 0,
+                          progressColor: Colors.red,
+                          backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
+                          circularStrokeCap: CircularStrokeCap.round,
+                          center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent1.getNhietDo.toInt()}°C" : "Nhiệt độ",
+                            style: TextStyle(
+                                color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10,),
+
+                    Expanded(
+                      child: Container(
+                        child: CircularPercentIndicator(
+                          radius: 100,
+                          percent: state == MQTTAppConnectionState.connected? _currentAppState.getGardent1.getDoAm.toDouble() / 100 : 0,
+                          progressColor: Colors.blue,
+                          backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
+                          circularStrokeCap: CircularStrokeCap.round,
+                          center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent1.getDoAm.toDouble()}%" : "Độ ẩm",
+                            style: TextStyle(
+                                color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10,),
+                    Expanded(
+                      child: Container(
+                        child: CircularPercentIndicator(
+                          radius: 100,
+                          percent: state == MQTTAppConnectionState.connected? _currentAppState.getGardent1.getDoAmDat.toDouble() / 100 : 0,
+                          progressColor: Colors.blue,
+                          backgroundColor: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
+                          circularStrokeCap: CircularStrokeCap.round,
+                          center: Text(state == MQTTAppConnectionState.connected? "${_currentAppState.getGardent1.getDoAmDat.toDouble()}%" : "Độ ẩm đất",
+                            style: TextStyle(
+                                color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(padding: EdgeInsets.all(5)),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        child: Center(
+                          child: const Text("Nhiệt độ",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10,),
+                    Expanded(
+                      child: Container(
+                        child: Center(
+                          child: const Text("Độ ẩm",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10,),
+                    Expanded(
+                      child: Container(
+                        child: Center(
+                          child: const Text("Độ ẩm đất",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        )
+    );
+  }
+
   Widget _buildGatePageButton(MQTTAppConnectionState state){
     return InkWell(
       onTap: () {
@@ -221,10 +346,48 @@ class _MQTTViewState extends State<MQTTView>{
           return null;
         }
       },
-      child: Container(
-        color: Colors.red,
-        child: Text('Hlee',style: TextStyle(color: Colors.red),),
-      ),
+      child: Padding(
+        padding: EdgeInsets.only(top: 0,left: 5,right: 5,bottom: 5),
+        child: Container(
+            padding: EdgeInsets.only(top: 30,bottom: 20,left: 30, right: 30),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: state == MQTTAppConnectionState.connected? Color(0xFF292636) : Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: Text('GateWay',style: TextStyle(
+                    color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(20)),
+                LinearPercentIndicator(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  lineHeight: 25,
+                  animation: false,
+                  progressColor: Colors.blue,
+                  backgroundColor:state == MQTTAppConnectionState.connected? Colors.white54 : Colors.white10,
+                  percent:state == MQTTAppConnectionState.connected? _currentAppState.getGardent.getNhietDo.toDouble() / 100 : 0,
+                  center:state == MQTTAppConnectionState.connected? Text('${_currentAppState.getGardent.getNhietDo.toDouble()}%') :
+                  Text('Mực nước',style: TextStyle(
+                      color: Colors.white38,
+                      fontWeight: FontWeight.bold
+                  ),),
+                  linearStrokeCap: LinearStrokeCap.roundAll,
+                  leading: Text('Mực nước  ',style: TextStyle(
+                    color: state == MQTTAppConnectionState.connected? Colors.white : Colors.white38,
+                    fontWeight: FontWeight.bold
+                  ),),
+                )
+              ]
+            ),
+        ),
+      )
     );
   }
 

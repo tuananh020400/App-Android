@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   mqtt_client: ^9.3.1
   provider: ^5.0.0
-  percent_indicator: ^4.0.0
+  percent_indicator: ^3.4.0
   syncfusion_flutter_charts: ^20.1.47
   lottie: ^1.2.2
 
